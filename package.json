@@ -1,0 +1,22 @@
+{
+  "name": "sobhaiot-portal",
+  "version": "1.0.0",
+  "description": "Sobha Limited IoT Asset Monitoring Portal",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 3000 -o",
+    "build": "echo 'Static site - no build needed'"
+  },
+  "keywords": [
+    "sobha",
+    "iot",
+    "monitoring",
+    "assets",
+    "construction"
+  ],
+  "author": "Ashwin J Chacko",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

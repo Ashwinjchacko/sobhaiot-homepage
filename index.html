@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobha IoT Portal</title>
+    <meta name="description" content="Sobha Limited IoT Portal – Secure access to Asset Monitoring, Crane Safety and Telematics dashboards.">
+    <script async defer src="https://accounts.google.com/gsi/client"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: #1a1a1a;
+        }
+
+        :root {
+            --sobha-gold: #D4AF37;
+            --sobha-dark: #1a1a1a;
+            --sobha-blue: #1e3a5f;
+        }
+
+        /* ==================== LOGIN PAGE ==================== */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            padding: 48px 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            max-width: 420px;
+            width: 100%;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        /* Full logo on login screen — wide rectangular container, no gray background */
+        .logo-container {
+            margin: 0 auto 20px;
+            width: 180px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .login-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #google-login-button {
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .login-footer {
+            text-align: center;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        /* ==================== DASHBOARD PAGE ==================== */
+        .dashboard-container {
+            min-height: 100vh;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        /* Small icon in dashboard header — transparent background, square */
+        .header-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .header-logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Full Sobha logo next to the icon in the header */
+        .header-logo-full {
+            height: 36px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .header-logo-full img {
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-info {
+            text-align: right;
+            min-width: 150px;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #D4AF37 0%, #E5C158 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .logout-btn {
+            padding: 8px 16px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+        }
+
+        /* ==================== DASHBOARD CONTENT ==================== */
+        .dashboard-content {
+            flex: 1;
+            padding: 40px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .welcome-section {
+            margin-bottom: 48px;
+        }
+
+        .welcome-heading {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .welcome-subheading {
+            font-size: 16px;
+            color: #6b7280;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .card-icon-asset {
+            background: rgba(30, 58, 95, 0.1);
+            color: #1e3a5f;
+        }
+
+        .card-icon-crane {
+            background: rgba(212, 175, 55, 0.1);
+            color: #D4AF37;
+        }
+
+        .card-icon-telematics {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5080 100%);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .card-link:hover {
+            transform: translateX(4px);
+            box-shadow: 0 8px 16px rgba(30, 58, 95, 0.2);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: #9ca3af;
+            font-size: 14px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .footer a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 32px 24px;
+            }
+
+            .welcome-heading {
+                font-size: 24px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-content {
+                padding: 24px 16px;
+            }
+
+            .header {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .logo-section {
+                flex: 1 0 auto;
+                order: 1;
+            }
+
+            .user-profile {
+                flex: 1 0 100%;
+                order: 2;
+                justify-content: space-between;
+            }
+
+            .user-info {
+                text-align: left;
+            }
+
+            .header-logo-full {
+                display: none; /* hide full logo on small screens, icon suffices */
+            }
+        }
+
+        /* ==================== HIDE/SHOW ==================== */
+        #login-view {
+            display: flex;
+        }
+
+        #dashboard-view {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN VIEW -->
+    <div id="login-view" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <!-- Full Sobha logo on login screen (no "Realty" — use sobha-logo.png) -->
+                <div class="logo-container">
+                    <img src="sobha-logo.png" alt="Sobha Logo" onerror="this.src='sobha-icon.jpg'">
+                </div>
+                <h1>Sobha IoT Portal</h1>
+                <p>Asset Monitoring &amp; Control System</p>
+            </div>
+
+            <div id="google-login-button"></div>
+
+            <div class="login-footer">
+                <p>Authorized access only. Sign in with your Google account.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD VIEW -->
+    <div id="dashboard-view" class="dashboard-container">
+        <div class="header">
+            <div class="logo-section">
+                <!-- Small square icon in dashboard header -->
+                <div class="header-logo-icon">
+                    <img src="sobha-icon.jpg" alt="Sobha Icon" onerror="this.style.display='none'">
+                </div>
+                <!-- Full Sobha logo alongside icon (no "Realty") -->
+                <div class="header-logo-full">
+                    <img src="sobha-logo.png" alt="Sobha Logo" onerror="this.style.display='none'">
+                </div>
+                <div class="logo-text">IoT Portal</div>
+            </div>
+            <div class="user-profile">
+                <div class="user-info">
+                    <div class="user-name" id="user-name"></div>
+                    <div class="user-email" id="user-email"></div>
+                </div>
+                <div class="avatar" id="user-avatar">A</div>
+                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="welcome-section">
+                <div class="welcome-heading">Welcome back, <span id="welcome-name">User</span></div>
+                <div class="welcome-subheading">Access your IoT monitoring dashboards</div>
+            </div>
+
+            <div class="cards-grid">
+                <!-- Asset Monitoring Card -->
+                <div class="card">
+                    <div class="card-icon card-icon-asset">📦</div>
+                    <h3 class="card-title">Asset Monitoring</h3>
+                    <p class="card-description">Real-time tracking of generators, vehicles, and equipment across sites</p>
+                    <a href="https://assets.sobhaiot.com" target="_blank" class="card-link">
+                        View Dashboard
+                        <span>→</span>
+                    </a>
+                </div>
+
+                <!-- Crane Safety Card -->
+                <div class="card">
+                    <div class="card-icon card-icon-crane">🏗️</div>
+                    <h3 class="card-title">Crane Safety</h3>
+                    <p class="card-description">Operator monitoring and safety compliance logging</p>
+                    <a href="https://crane.sobhaiot.com" target="_blank" class="card-link">
+                        View Dashboard
+                        <span>→</span>
+                    </a>
+                </div>
+
+                <!-- Telematics Card -->
+                <div class="card">
+                    <div class="card-icon card-icon-telematics">🚗</div>
+                    <h3 class="card-title">Telematics</h3>
+                    <p class="card-description">Central telematics dashboard</p>
+                    <a href="https://telematics.sobhaiot.com" target="_blank" class="card-link">
+                        View Dashboard
+                        <span>→</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>© 2026 Sobha Limited. All rights reserved. | <a href="#">Privacy Policy</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION - EDIT THIS SECTION
+        // ============================================
+        const CONFIG = {
+            GOOGLE_CLIENT_ID: '395680589597-ipu4hpeguu8bur0aknol405qlhi1irdr.apps.googleusercontent.com',
+            ALLOWED_EMAILS: ['ashwinjchacko@gmail.com'],
+            // To add more emails:
+            // ALLOWED_EMAILS: ['ashwinjchacko@gmail.com', 'email2@sobha.com']
+        };
+
+        // ============================================
+        // AUTHENTICATION LOGIC
+        // ============================================
+
+        function initializeGoogleLogin() {
+            if (typeof google === 'undefined') {
+                console.error('Google API not loaded yet. Retrying...');
+                setTimeout(initializeGoogleLogin, 500);
+                return;
+            }
+
+            try {
+                google.accounts.id.initialize({
+                    client_id: CONFIG.GOOGLE_CLIENT_ID,
+                    callback: handleGoogleSignIn,
+                    auto_select: false
+                });
+
+                google.accounts.id.renderButton(
+                    document.getElementById('google-login-button'),
+                    {
+                        theme: 'outline',
+                        size: 'large',
+                        width: '100%',
+                        text: 'signin_with'
+                    }
+                );
+            } catch (error) {
+                console.error('Error initializing Google login:', error);
+                alert('Failed to initialize login. Please ensure Client ID is configured correctly.');
+            }
+        }
+
+        function handleGoogleSignIn(response) {
+            if (!response.credential) {
+                alert('Sign-in failed. Please try again.');
+                return;
+            }
+
+            try {
+                // Decode JWT token
+                const base64Url = response.credential.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+
+                const userData = JSON.parse(jsonPayload);
+
+                // Check if email is in allowed list
+                if (!CONFIG.ALLOWED_EMAILS.includes(userData.email)) {
+                    alert('Access denied. Your email is not authorized.\n\nAuthorized: ' + CONFIG.ALLOWED_EMAILS.join(', '));
+                    try {
+                        google.accounts.id.disableAutoSelect();
+                    } catch (e) {}
+                    return;
+                }
+
+                // Store user data
+                sessionStorage.setItem('user', JSON.stringify({
+                    email: userData.email,
+                    name: userData.name,
+                    picture: userData.picture
+                }));
+
+                // Show dashboard
+                showDashboard();
+            } catch (error) {
+                console.error('Error processing sign-in:', error);
+                alert('An error occurred. Please try again.');
+            }
+        }
+
+        function showDashboard() {
+            const user = JSON.parse(sessionStorage.getItem('user'));
+
+            document.getElementById('login-view').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'flex';
+
+            const firstName = user.name.split(' ')[0];
+            document.getElementById('welcome-name').textContent = firstName;
+            document.getElementById('user-name').textContent = user.name;
+            document.getElementById('user-email').textContent = user.email;
+
+            const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+            document.getElementById('user-avatar').textContent = initials;
+        }
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('user');
+                try {
+                    google.accounts.id.disableAutoSelect();
+                } catch (e) {}
+                document.getElementById('dashboard-view').style.display = 'none';
+                document.getElementById('login-view').style.display = 'flex';
+            }
+        }
+
+        // Check on page load
+        window.addEventListener('load', function() {
+            const user = sessionStorage.getItem('user');
+            if (user) {
+                showDashboard();
+            } else {
+                initializeGoogleLogin();
+            }
+        });
+
+        // Handle page visibility (browser back/forward cache)
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                const user = sessionStorage.getItem('user');
+                if (user) {
+                    showDashboard();
+                } else {
+                    document.getElementById('dashboard-view').style.display = 'none';
+                    document.getElementById('login-view').style.display = 'flex';
+                }
+            }
+        });
+
+        // Warn if Client ID not configured
+        window.addEventListener('DOMContentLoaded', function() {
+            if (CONFIG.GOOGLE_CLIENT_ID === 'YOUR_GOOGLE_CLIENT_ID_HERE') {
+                console.warn('⚠️ WARNING: Google Client ID not configured!');
+                alert('⚠️ Google Client ID not configured.\n\nPlease find this line in index.html:\nGOOGLE_CLIENT_ID: \'YOUR_GOOGLE_CLIENT_ID_HERE\'\n\nAnd replace it with your actual Client ID from Google Cloud Console.');
+            }
+        });
+    </script>
+</body>
+</html>
