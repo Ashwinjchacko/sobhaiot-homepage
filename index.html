@@ -49,16 +49,16 @@
             margin-bottom: 32px;
         }
 
-        /* Full logo on login screen — wide rectangular container, no gray background */
+        /* Small icon on login screen */
         .logo-container {
             margin: 0 auto 20px;
-            width: 180px;
-            height: 72px;
+            width: 56px;
+            height: 56px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: transparent;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
         }
 
@@ -367,9 +367,9 @@
     <div id="login-view" class="login-container">
         <div class="login-card">
             <div class="login-header">
-                <!-- Full Sobha logo on login screen (no "Realty" — use sobha-logo.png) -->
+                <!-- Small Sobha icon on login screen -->
                 <div class="logo-container">
-                    <img src="sobha-logo.png" alt="Sobha Logo" onerror="this.src='sobha-icon.jpg'">
+                    <img src="sobha-icon.jpg" alt="Sobha Icon" onerror="this.style.display='none'">
                 </div>
                 <h1>Sobha IoT Portal</h1>
                 <p>Asset Monitoring &amp; Control System</p>
@@ -456,7 +456,7 @@
         // ============================================
         const CONFIG = {
             GOOGLE_CLIENT_ID: '395680589597-ipu4hpeguu8bur0aknol405qlhi1irdr.apps.googleusercontent.com',
-            ALLOWED_EMAILS: ['ashwinjchacko@gmail.com','vishnu.gajendran@sobha.com'],
+            ALLOWED_EMAILS: ['ashwinjchacko@gmail.com'],
             // To add more emails:
             // ALLOWED_EMAILS: ['ashwinjchacko@gmail.com', 'email2@sobha.com']
         };
