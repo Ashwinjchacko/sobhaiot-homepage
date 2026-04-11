@@ -512,7 +512,7 @@
 
                 // Check if email is in allowed list
                 if (!CONFIG.ALLOWED_EMAILS.includes(userData.email)) {
-                    alert('Access denied. Your email is not authorized.\n\nAuthorized: ' + CONFIG.ALLOWED_EMAILS.join(', '));
+                    alert('Access denied. Your email is not authorized, Contact admin @ ashwinjchacko@gmail.com.');
                     try {
                         google.accounts.id.disableAutoSelect();
                     } catch (e) {}
